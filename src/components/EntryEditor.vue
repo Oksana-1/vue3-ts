@@ -3,11 +3,9 @@ import EmojiField from "@/components/EmojiField.vue";
 import ArrowCircleRight from "@/assets/icons/arrow-circle-right.svg";
 import type Emoji from "@/types/Emoji";
 import { ref } from "vue";
-import type { Ref } from "vue";
 
 const text = ref("");
-const emoji: Ref<Emoji | null> = ref(null);
-
+const emoji = ref<Emoji | null>(null);
 </script>
 <template>
   <form class="entry-form" @submit.prevent>
