@@ -24,7 +24,7 @@ const createHandler = (entry: Entry) => {
     <EntryEditor @@create="createHandler" />
     <ul>
       <li v-for="entryItem in entries" :key="entryItem.id">
-        <EntryCard />
+        <EntryCard :entry="entryItem" />
       </li>
     </ul>
   </main>
