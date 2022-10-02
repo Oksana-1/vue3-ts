@@ -2,25 +2,46 @@
 import EmojiField from "@/components/EmojiField.vue";
 import ArrowCircleRight from "@/assets/icons/arrow-circle-right.svg";
 import type Emoji from "@/types/Emoji";
-import { ref, computed } from "vue";
+import { ref, computed, defineEmits } from "vue";
+import type Entry from "@/types/Entry";
 
-const text = ref("Hello, world!");
+const body = ref("Hello, world!");
 const emoji = ref<Emoji | null>(null);
 const maxChars = 280;
-const charCount = computed(() => text.value.length);
+const charCount = computed(() => body.value.length);
+
+const emit = defineEmits<{
+  (event: "@create", entry: Entry): void;
+}>();
+
 const handleTextInput = (event: Event) => {
   const textArea = event.target as HTMLTextAreaElement;
   if (textArea.value.length <= maxChars) {
-    text.value = textArea.value;
+    body.value = textArea.value;
   } else {
-    text.value = textArea.value.substring(0, 280);
+    body.value = textArea.value.substring(0, 280);
   }
 };
+const entry = computed(() => ({
+  body: body.value,
+  emoji: emoji.value,
+  createdAt: new Date(),
+  userId: 1,
+  id: Math.random(),
+}));
+const submitForm = () => {
+  emit("@create", entry.value);
+  resetForm();
+};
+function resetForm() {
+  body.value = "";
+  emoji.value = null;
+}
 </script>
 <template>
-  <form class="entry-form" @submit.prevent>
+  <form class="entry-form" @submit.prevent="submitForm">
     <textarea
-      v-model="text"
+      v-model="body"
       @keyup="handleTextInput"
       placeholder="New Journal Entry for danielkelly_io"
     ></textarea>
